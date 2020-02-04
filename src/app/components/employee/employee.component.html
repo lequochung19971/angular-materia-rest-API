@@ -1,0 +1,97 @@
+<form
+  [formGroup]="employeeService.form"
+  class="normal-form"
+  (submit)="onSubmit()"
+>
+  <mat-grid-list cols="2" rowHeight="300px">
+    <mat-grid-tile>
+      <div class="input-container">
+        <input type="hidden" formControlName="$key" />
+        <mat-form-field>
+          <input matInput formControlName="fullName" placeholder="Full Name*" />
+          <mat-error>This field is mandatory.</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput formControlName="email" placeholder="Email" />
+          <mat-error
+            *ngIf="employeeService.form.controls['email'].errors?.email"
+            >Invalid email address.</mat-error
+          >
+          <mat-error
+            *ngIf="employeeService.form.controls['email'].errors?.required"
+            >This field is mandatory.</mat-error
+          >
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput formControlName="mobile" placeholder="Mobile*" />
+          <mat-error
+            *ngIf="employeeService.form.controls['mobile'].errors?.required"
+            >This field is mandatory.</mat-error
+          >
+          <mat-error
+            *ngIf="employeeService.form.controls['mobile'].errors?.minlength"
+            >Minimum 10 charactors needed.</mat-error
+          >
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput formControlName="city" placeholder="City" />
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile>
+      <div class="input-container">
+        <mat-radio-group formControlName="gender">
+          <mat-radio-button value="1">Male</mat-radio-button>
+          <mat-radio-button value="2">Female</mat-radio-button>
+          <mat-radio-button value="3">Other</mat-radio-button>
+        </mat-radio-group>
+        <mat-form-field>
+          <mat-select placeholder="Department" formControlName="department">
+            <mat-option
+              *ngFor="let dep of depService.departments"
+              [value]="dep.$key"
+              >{{ dep.code }}, {{ dep.name }}</mat-option
+            >
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+          <input
+            matInput
+            [matDatepicker]="picker"
+            placeholder="Hire Date"
+            color="primary"
+            formControlName="hireDate"
+          />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        <div class="cb-permanent">
+          <mat-checkbox formControlName="isPermanent"
+            >Permanent Employee</mat-checkbox
+          >
+        </div>
+        <div class="btn-submit">
+          <button
+            mat-raised-button
+            color="primary"
+            type="submit"
+            [disabled]="employeeService.form.invalid"
+          >
+            Submit
+          </button>
+          <button
+            mat-raised-button
+            color="warn"
+            type="button"
+            (click)="onClear()"
+          >
+            Clear
+          </button>
+        </div>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+</form>
