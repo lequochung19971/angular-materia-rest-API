@@ -1,0 +1,18 @@
+.d-flex {
+  display: flex;
+}
+
+.flex-column {
+  flex-direction: column;
+}
+
+.overlay {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 93%;
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.8);
+  z-index: 1000;
+}

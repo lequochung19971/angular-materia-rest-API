@@ -1,27 +1,50 @@
-import { Component, OnInit, DoCheck } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { EmployeeService } from 'src/app/service/employee.service';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
+import { CheckLoadingService } from 'src/app/check-loading.service';
 
 @Component({
   selector: 'app-employee-table',
   templateUrl: './employee-table.component.html',
   styleUrls: ['./employee-table.component.scss']
 })
-export class EmployeeTableComponent implements OnInit {
+export class EmployeeTableComponent implements OnInit, OnDestroy {
   employeeList: MatTableDataSource<any>;
-  displayedColumns: string[] = ['fullName'];
-  constructor(private employeeService: EmployeeService) {}
+  displayedColumns: string[] = [
+    'fullName',
+    'email',
+    'mobile',
+    'city',
+    'actions'
+  ];
+  @ViewChild(MatSort, { static: false }) sort: MatSort;
+  @ViewChild(MatPaginator, { static: false }) pagi: MatPaginator;
 
-  ngOnInit() {
-    this.employeeService.getEmployees().subscribe(list => {
-      let array = list.map(item => {
-        return { $key: item.key, ...item.payload.val() };
-      });
-      this.employeeList = new MatTableDataSource(array);
-    });
+  constructor(
+    private employeeService: EmployeeService,
+    private checkLoadingService: CheckLoadingService
+  ) {
+    checkLoadingService.set(true);
   }
 
-  ngDoCheck() {
-    console.log(this.employeeList);
+  ngOnInit() {
+    this.employeeService.getEmployees().subscribe(
+      data => {
+        let array = data.map(item => {
+          return { $key: item.key, ...item.payload.val() };
+        });
+        this.employeeList = new MatTableDataSource(array);
+        this.checkLoadingService.set(false);
+        this.employeeList.sort = this.sort;
+        this.employeeList.paginator = this.pagi;
+      },
+      () => {
+        this.checkLoadingService.set(false);
+      }
+    );
+  }
+
+  ngOnDestroy() {
+    this.checkLoadingService.set(true);
   }
 }

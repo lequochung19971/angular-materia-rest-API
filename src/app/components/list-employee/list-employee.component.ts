@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { CheckLoadingService } from 'src/app/check-loading.service';
 
 @Component({
   selector: 'app-list-employee',
@@ -6,10 +7,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./list-employee.component.scss']
 })
 export class ListEmployeeComponent implements OnInit {
+  constructor(private checkLoadingService: CheckLoadingService) {}
 
-  constructor() { }
-
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }

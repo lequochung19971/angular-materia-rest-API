@@ -1,6 +1,15 @@
-<div>
-  <mat-toolbar color="primary">
-    <span>CRUD Reactive Form Angular 8 Material </span>
-  </mat-toolbar>
-  <app-employee-table></app-employee-table>
+<div class="d-flex flex-column">
+  <div class="overlay" [hidden]="!checkLoadingService.get()"></div>
+  <header>
+    <mat-toolbar color="primary">
+      <span>CRUD Reactive Form Angular 8 Material </span>
+    </mat-toolbar>
+    <div [hidden]="!checkLoadingService.get()">
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    </div>
+  </header>
+
+  <main>
+    <app-employee-table></app-employee-table>
+  </main>
 </div>

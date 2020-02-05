@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { AngularFireDatabase, AngularFireList } from '@angular/fire/database';
+import { BehaviorSubject } from 'rxjs';
+import { CheckLoadingService } from '../check-loading.service';
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +25,12 @@ export class EmployeeService {
 
   private employeeList: AngularFireList<any>;
 
-  constructor(private firebase: AngularFireDatabase) {}
+  dataEmployeesList: any[] = [];
+
+  constructor(
+    private firebase: AngularFireDatabase,
+    private loadingService: CheckLoadingService
+  ) {}
 
   initializeFormGroup() {
     this.form.setValue({
@@ -44,10 +51,26 @@ export class EmployeeService {
     return this.employeeList.snapshotChanges();
   }
 
+  fetchEmployees() {
+    this.loadingService.set(true);
+    this.getEmployees().subscribe(
+      data => {
+        let array = data.map(item => {
+          return { $key: item.key, ...item.payload.val() };
+        });
+        this.dataEmployeesList = [...array];
+        this.loadingService.set(false);
+      },
+      () => {
+        this.loadingService.set(false);
+      }
+    );
+  }
+
   insertEmployee(employee) {
-    console.log(employee.hireDate.toISOString());
     this.employeeList.push({
       fullName: employee.fullName,
+      email: employee.email,
       mobile: employee.mobile,
       city: employee.city,
       gender: employee.gender,
@@ -60,6 +83,7 @@ export class EmployeeService {
   updateEmployee(employee) {
     this.employeeList.update(employee.$key, {
       fullName: employee.fullName,
+      email: employee.email,
       mobile: employee.mobile,
       city: employee.city,
       gender: employee.gender,

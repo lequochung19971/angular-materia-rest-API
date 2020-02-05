@@ -18,7 +18,11 @@ import * as Mat from '@angular/material';
     Mat.MatCheckboxModule,
     Mat.MatButtonModule,
     Mat.MatSnackBarModule,
-    Mat.MatTableModule
+    Mat.MatTableModule,
+    Mat.MatIconModule,
+    Mat.MatProgressBarModule,
+    Mat.MatSortModule,
+    Mat.MatPaginatorModule
   ],
   exports: [
     Mat.MatToolbarModule,
@@ -33,8 +37,11 @@ import * as Mat from '@angular/material';
     Mat.MatCheckboxModule,
     Mat.MatButtonModule,
     Mat.MatSnackBarModule,
-    Mat.MatTableModule
-
+    Mat.MatTableModule,
+    Mat.MatIconModule,
+    Mat.MatProgressBarModule,
+    Mat.MatSortModule,
+    Mat.MatPaginatorModule
   ]
 })
 export class MaterialModule {}

@@ -1,8 +1,51 @@
-<mat-table [dataSource]="employeeList" class="mat-elevation-z8">
-  <ng-container matColumnDef="fullName">
-    <mat-header-cell *matHeaderCellDef>Full Name</mat-header-cell>
-    <mat-cell *matCellDef="let element">{{ element }}</mat-cell>
-  </ng-container>
-  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-  <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
-</mat-table>
+<div class="m-45px mat-elevation-z8">
+  <mat-table [dataSource]="employeeList" matSort>
+    <ng-container matColumnDef="fullName">
+      <mat-header-cell *matHeaderCellDef mat-sort-header
+        >Full Name</mat-header-cell
+      >
+      <mat-cell *matCellDef="let element">{{ element.fullName }}</mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="email">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Email</mat-header-cell>
+      <mat-cell *matCellDef="let element">{{ element.email }}</mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="mobile">
+      <mat-header-cell *matHeaderCellDef mat-sort-header
+        >Mobile</mat-header-cell
+      >
+      <mat-cell *matCellDef="let element">{{ element.mobile }}</mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="city">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>City</mat-header-cell>
+      <mat-cell *matCellDef="let element">{{ element.city }}</mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="actions">
+      <mat-header-cell *matHeaderCellDef></mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        <button mat-icon-button><mat-icon>launch</mat-icon></button>
+        <button mat-icon-button color="warn">
+          <mat-icon>delete_outline</mat-icon>
+        </button>
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="non-data">
+      <mat-footer-cell *matFooterCellDef>Data not found...</mat-footer-cell>
+    </ng-container>
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+    <mat-footer-row
+      *matFooterRowDef="['non-data']"
+      [ngClass]="{
+        hide: !(employeeList != null && employeeList.data.length == 0)
+      }"
+    ></mat-footer-row>
+  </mat-table>
+  <mat-paginator
+    [length]="100"
+    [pageSize]="10"
+    [pageSizeOptions]="[5, 10, 25, 100]"
+    showFirstLastButtons
+  >
+  </mat-paginator>
+</div>
