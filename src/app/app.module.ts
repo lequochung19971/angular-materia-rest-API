@@ -12,8 +12,9 @@ import { EmployeeComponent } from './components/employee/employee.component';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireDatabaseModule } from '@angular/fire/database';
 import { environment } from '../environments/environment';
+import { EmployeeTableComponent } from './components/employee-table/employee-table.component';
 @NgModule({
-  declarations: [AppComponent, ListEmployeeComponent, EmployeeComponent],
+  declarations: [AppComponent, ListEmployeeComponent, EmployeeComponent, EmployeeTableComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
