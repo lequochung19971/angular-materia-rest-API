@@ -1,21 +1,40 @@
 <div class="m-45px">
   <div class="search-add-wrapper">
-      <button mat-raised-button color="primary" class="mr-20px">
-        <mat-icon>add</mat-icon>Create
-      </button>
+    <button mat-raised-button color="primary" class="mr-20px">
+      <mat-icon>add</mat-icon>Create
+    </button>
     <mat-form-field floatLabel="never" class="w-100">
-      <input matInput placeholder="Search" value="value" autocomplete="off" [(ngModel)]="searchKey" (keyup)="applyFilter()">
-      <button mat-button mat-icon-button matSuffix *ngIf="searchKey" (click)="clearSearchBox()"><mat-icon>close</mat-icon></button>
+      <input
+        matInput
+        placeholder="Search"
+        value="value"
+        autocomplete="off"
+        [(ngModel)]="searchKey"
+        (keyup)="applyFilter()"
+      />
+      <button
+        mat-button
+        mat-icon-button
+        matSuffix
+        *ngIf="searchKey"
+        (click)="clearSearchBox()"
+      >
+        <mat-icon>close</mat-icon>
+      </button>
     </mat-form-field>
   </div>
   <div class="mat-elevation-z5">
     <mat-table [dataSource]="employeeList" matSort>
       <ng-container matColumnDef="fullName">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>Full Name</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header
+          >Full Name</mat-header-cell
+        >
         <mat-cell *matCellDef="let element">{{ element.fullName }}</mat-cell>
       </ng-container>
       <ng-container matColumnDef="email">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>Email</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header
+          >Email</mat-header-cell
+        >
         <mat-cell *matCellDef="let element">{{ element.email }}</mat-cell>
       </ng-container>
       <ng-container matColumnDef="mobile">
@@ -24,8 +43,16 @@
         >
         <mat-cell *matCellDef="let element">{{ element.mobile }}</mat-cell>
       </ng-container>
+      <ng-container matColumnDef="dapartment">
+        <mat-header-cell *matHeaderCellDef mat-sort-header
+          >Department</mat-header-cell
+        >
+        <mat-cell *matCellDef="let element">{{ element.dapartment }}</mat-cell>
+      </ng-container>
       <ng-container matColumnDef="city">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>City</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header
+          >City</mat-header-cell
+        >
         <mat-cell *matCellDef="let element">{{ element.city }}</mat-cell>
       </ng-container>
       <ng-container matColumnDef="actions">
@@ -45,7 +72,7 @@
       <mat-footer-row
         *matFooterRowDef="['non-data']"
         [ngClass]="{
-          hide: !(employeeList != null && employeeList.data.length == 0)
+          hide: !!(employeeList && employeeList.data.length !== 0)
         }"
       ></mat-footer-row>
     </mat-table>
@@ -58,4 +85,3 @@
     </mat-paginator>
   </div>
 </div>
-

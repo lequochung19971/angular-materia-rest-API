@@ -1,8 +1,9 @@
 import { Component, OnInit, DoCheck } from '@angular/core';
-import { EmployeeService } from 'src/app/service/employee.service';
-import { DeparmentService } from 'src/app/services/deparment.service';
+import { EmployeeService } from 'src/app/shared/employee.service';
+import { DeparmentService } from 'src/app/shared/deparment.service';
 import { Observable } from 'rxjs';
-import { NotificationService } from 'src/app/service/notification.service';
+import { NotificationService } from 'src/app/shared/notification.service';
+import { Employee } from 'src/app/model/employee.model';
 
 @Component({
   selector: 'app-employee',
@@ -18,7 +19,6 @@ export class EmployeeComponent implements OnInit {
 
   ngOnInit() {
     this.employeeService.getEmployees();
-    this.depService.getDepartments();
   }
 
   onClear() {

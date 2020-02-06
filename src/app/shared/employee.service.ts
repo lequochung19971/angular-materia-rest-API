@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { AngularFireDatabase, AngularFireList } from '@angular/fire/database';
-import { BehaviorSubject } from 'rxjs';
 import { CheckLoadingService } from '../check-loading.service';
 
 @Injectable({
@@ -25,12 +24,7 @@ export class EmployeeService {
 
   private employeeList: AngularFireList<any>;
 
-  dataEmployeesList: any[] = [];
-
-  constructor(
-    private firebase: AngularFireDatabase,
-    private loadingService: CheckLoadingService
-  ) {}
+  constructor(private firebase: AngularFireDatabase) {}
 
   initializeFormGroup() {
     this.form.setValue({
@@ -49,22 +43,6 @@ export class EmployeeService {
   getEmployees() {
     this.employeeList = this.firebase.list('employees');
     return this.employeeList.snapshotChanges();
-  }
-
-  fetchEmployees() {
-    this.loadingService.set(true);
-    this.getEmployees().subscribe(
-      data => {
-        let array = data.map(item => {
-          return { $key: item.key, ...item.payload.val() };
-        });
-        this.dataEmployeesList = [...array];
-        this.loadingService.set(false);
-      },
-      () => {
-        this.loadingService.set(false);
-      }
-    );
   }
 
   insertEmployee(employee) {
