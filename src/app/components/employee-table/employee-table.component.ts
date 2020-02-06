@@ -10,6 +10,8 @@ import { CheckLoadingService } from 'src/app/check-loading.service';
 })
 export class EmployeeTableComponent implements OnInit, OnDestroy {
   employeeList: MatTableDataSource<any>;
+  searchKey: string = '';
+
   displayedColumns: string[] = [
     'fullName',
     'email',
@@ -17,6 +19,7 @@ export class EmployeeTableComponent implements OnInit, OnDestroy {
     'city',
     'actions'
   ];
+
   @ViewChild(MatSort, { static: false }) sort: MatSort;
   @ViewChild(MatPaginator, { static: false }) pagi: MatPaginator;
 
@@ -46,5 +49,14 @@ export class EmployeeTableComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.checkLoadingService.set(true);
+  }
+
+  clearSearchBox() {
+    this.searchKey = '';
+    this.applyFilter();
+  }
+
+  applyFilter() {
+    this.employeeList.filter = this.searchKey.trim().toLowerCase();
   }
 }

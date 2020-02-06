@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MaterialModule } from './material/material.module';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -22,7 +22,8 @@ import { EmployeeTableComponent } from './components/employee-table/employee-tab
     MaterialModule,
     ReactiveFormsModule,
     AngularFireDatabaseModule,
-    AngularFireModule.initializeApp(environment.firebaseConfig)
+    AngularFireModule.initializeApp(environment.firebaseConfig),
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
