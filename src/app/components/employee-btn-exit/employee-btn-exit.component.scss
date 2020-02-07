@@ -1,0 +1,9 @@
+.exit-btn {
+  position: fixed;
+  bottom: 45px;
+  left: 45px;
+
+  mat-icon {
+    transform: rotate(180deg);
+  }
+}

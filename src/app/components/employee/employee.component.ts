@@ -1,9 +1,7 @@
-import { Component, OnInit, DoCheck } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ConfirmDialogService } from 'src/app/shared/confirm-dialog.service';
 import { EmployeeService } from 'src/app/shared/employee.service';
-import { DeparmentService } from 'src/app/shared/deparment.service';
-import { Observable } from 'rxjs';
-import { NotificationService } from 'src/app/shared/notification.service';
-import { Employee } from 'src/app/model/employee.model';
+import { RouterLink, Router } from '@angular/router';
 
 @Component({
   selector: 'app-employee',
@@ -12,34 +10,23 @@ import { Employee } from 'src/app/model/employee.model';
 })
 export class EmployeeComponent implements OnInit {
   constructor(
+    private dialogService: ConfirmDialogService,
     private employeeService: EmployeeService,
-    private depService: DeparmentService,
-    private notiService: NotificationService
+    private router: Router
   ) {}
 
-  ngOnInit() {
-    this.employeeService.getEmployees();
-  }
+  ngOnInit() {}
 
-  onClear() {
-    this.employeeService.form.reset();
-    this.employeeService.initializeFormGroup();
-    this.employeeService.getEmployees();
-    this.notiService.successMessage(
-      'XXX Fields were cleared',
-      'snackbar-clear'
-    );
-  }
-
-  onSubmit() {
-    if (this.employeeService.form.valid) {
-      this.employeeService.insertEmployee(this.employeeService.form.value);
-      this.employeeService.form.reset();
-      this.employeeService.initializeFormGroup();
-      this.notiService.successMessage(
-        '::: Submitted Successfully',
-        'snackbar-success'
-      );
+  onClickExit(beClick: boolean) {
+    console.log(this.employeeService.form.dirty);
+    if (beClick && this.employeeService.form.dirty) {
+      this.openConfirm('Do you want discard changes?');
+    } else {
+      this.router.navigate(['/employeeTable']);
     }
+  }
+
+  openConfirm(mess: string) {
+    this.dialogService.openConfirmDialog(mess);
   }
 }

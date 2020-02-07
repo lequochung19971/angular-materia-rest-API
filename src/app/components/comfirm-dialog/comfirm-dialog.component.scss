@@ -1,0 +1,19 @@
+.wrapper-dialog {
+  margin-top: -15px;
+  .icon-exit {
+    text-align: end;
+    margin: 0;
+  }
+
+  .dialog-actions {
+    button {
+      flex: 1;
+    }
+  }
+
+  .dialog-content {
+    padding: 30px 0;
+    text-align: center;
+    font-size: 20px;
+  }
+}

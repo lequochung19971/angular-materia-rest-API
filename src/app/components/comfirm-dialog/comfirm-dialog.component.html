@@ -1,0 +1,19 @@
+<div class="wrapper-dialog">
+  <div mat-dialog-title class="icon-exit">
+    <button mat-button mat-icon-button (click)="closeDialog()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+  <div mat-dialog-content class="dialog-content">{{ data.message }}</div>
+  <div mat-dialog-actions class="dialog-actions">
+    <button mat-raised-button [mat-dialog-close]="false">No</button>
+    <button
+      mat-raised-button
+      color="primary"
+      [routerLink]="'/employeeTable'"
+      [mat-dialog-close]="true"
+    >
+      Yes
+    </button>
+  </div>
+</div>

@@ -1,0 +1,9 @@
+<div [ngClass]="'snackbar-' + getIcon" class="flexLayout">
+  <div>
+    <mat-icon>{{ getIcon }}</mat-icon>
+  </div>
+  &nbsp; &nbsp;
+  <div>
+    <span>{{ data.message }}</span>
+  </div>
+</div>

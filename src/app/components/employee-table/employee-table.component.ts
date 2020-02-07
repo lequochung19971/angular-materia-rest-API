@@ -4,6 +4,8 @@ import { MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
 import { CheckLoadingService } from 'src/app/check-loading.service';
 import { DeparmentService } from 'src/app/shared/deparment.service';
 import { Employee } from 'src/app/model/employee.model';
+import { EmployeeInfoDialogService } from 'src/app/shared/employee-info-dialog.service';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-employee-table',
@@ -17,7 +19,7 @@ export class EmployeeTableComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = [
     'fullName',
     'email',
-    'dapartment',
+    'department',
     'mobile',
     'city',
     'actions'
@@ -29,7 +31,8 @@ export class EmployeeTableComponent implements OnInit, OnDestroy {
   constructor(
     private employeeService: EmployeeService,
     private checkLoadingService: CheckLoadingService,
-    private depService: DeparmentService
+    private depService: DeparmentService,
+    private employeeDialog: EmployeeInfoDialogService
   ) {
     checkLoadingService.set(true);
   }
@@ -38,15 +41,17 @@ export class EmployeeTableComponent implements OnInit, OnDestroy {
     this.employeeService.getEmployees().subscribe(
       data => {
         let array = data.map(item => {
-          let deparmentName = this.depService.getDepartmentName(
-            item.payload.val()['dapartment']
+          let departmentName = this.depService.getDepartmentName(
+            item.payload.val()['department']
           );
+
           return {
             $key: item.key,
-            department: deparmentName,
+            departmentName,
             ...item.payload.val()
           };
         });
+
         this.employeeList = new MatTableDataSource(array);
         this.checkLoadingService.set(false);
         this.employeeList.sort = this.sort;
@@ -67,7 +72,7 @@ export class EmployeeTableComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.checkLoadingService.set(true);
+    this.checkLoadingService.set(false);
   }
 
   clearSearchBox() {
@@ -77,5 +82,14 @@ export class EmployeeTableComponent implements OnInit, OnDestroy {
 
   applyFilter() {
     this.employeeList.filter = this.searchKey.trim().toLowerCase();
+  }
+
+  openCreateEmployeeDialog() {
+    this.employeeDialog.openEmployeeInfoDialog();
+  }
+
+  openEditEmployeeDialog(data) {
+    this.employeeService.form.setValue(_.omit(data, 'departmentName'));
+    this.employeeDialog.openEmployeeInfoDialog();
   }
 }

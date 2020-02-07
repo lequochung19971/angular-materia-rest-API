@@ -43,13 +43,19 @@ body {
 .snackbar-success {
   background-color: #87ca62;
   color: #ffffff;
-  font-size: 24px;
-  font-weight: 500;
 }
 
-.snackbar-clear {
+.snackbar-error {
   background-color: #de4e4e;
   color: #ffffff;
-  font-size: 24px;
-  font-weight: 500;
+}
+
+.snackbar-warn {
+  background-color: #c8de4e;
+  color: #ffffff;
+}
+
+.snackbar-info {
+  background-color: #4ea4de;
+  color: #ffffff;
 }

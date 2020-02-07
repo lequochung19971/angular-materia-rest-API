@@ -22,7 +22,8 @@ import * as Mat from '@angular/material';
     Mat.MatIconModule,
     Mat.MatProgressBarModule,
     Mat.MatSortModule,
-    Mat.MatPaginatorModule
+    Mat.MatPaginatorModule,
+    Mat.MatDialogModule
   ],
   exports: [
     Mat.MatToolbarModule,
@@ -41,7 +42,9 @@ import * as Mat from '@angular/material';
     Mat.MatIconModule,
     Mat.MatProgressBarModule,
     Mat.MatSortModule,
-    Mat.MatPaginatorModule
+    Mat.MatPaginatorModule,
+    Mat.MatDialogModule
+
   ]
 })
 export class MaterialModule {}

@@ -1,6 +1,11 @@
 <div class="m-45px">
   <div class="search-add-wrapper">
-    <button mat-raised-button color="primary" class="mr-20px">
+    <button
+      mat-raised-button
+      color="primary"
+      class="mr-20px"
+      (click)="openCreateEmployeeDialog()"
+    >
       <mat-icon>add</mat-icon>Create
     </button>
     <mat-form-field floatLabel="never" class="w-100">
@@ -43,11 +48,13 @@
         >
         <mat-cell *matCellDef="let element">{{ element.mobile }}</mat-cell>
       </ng-container>
-      <ng-container matColumnDef="dapartment">
+      <ng-container matColumnDef="department">
         <mat-header-cell *matHeaderCellDef mat-sort-header
           >Department</mat-header-cell
         >
-        <mat-cell *matCellDef="let element">{{ element.dapartment }}</mat-cell>
+        <mat-cell *matCellDef="let element">{{
+          element.departmentName
+        }}</mat-cell>
       </ng-container>
       <ng-container matColumnDef="city">
         <mat-header-cell *matHeaderCellDef mat-sort-header
@@ -57,8 +64,10 @@
       </ng-container>
       <ng-container matColumnDef="actions">
         <mat-header-cell *matHeaderCellDef></mat-header-cell>
-        <mat-cell *matCellDef="let row">
-          <button mat-icon-button><mat-icon>launch</mat-icon></button>
+        <mat-cell *matCellDef="let data">
+          <button mat-icon-button (click)="openEditEmployeeDialog(data)">
+            <mat-icon>launch</mat-icon>
+          </button>
           <button mat-icon-button color="warn">
             <mat-icon>delete_outline</mat-icon>
           </button>

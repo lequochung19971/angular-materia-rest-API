@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { AngularFireDatabase, AngularFireList } from '@angular/fire/database';
 import { CheckLoadingService } from '../check-loading.service';
@@ -7,17 +7,24 @@ import { CheckLoadingService } from '../check-loading.service';
   providedIn: 'root'
 })
 export class EmployeeService {
+  @Output() isFilled = new EventEmitter();
+
   form = new FormGroup({
     $key: new FormControl(null),
-    fullName: new FormControl('', Validators.required),
+    fullName: new FormControl('', [
+      Validators.required,
+      Validators.pattern('[a-zA-Z ]*')
+    ]),
     email: new FormControl('', [Validators.email, Validators.required]),
     mobile: new FormControl('', [
+      Validators.minLength(9),
+      Validators.maxLength(20),
       Validators.required,
-      Validators.minLength(10)
+      Validators.pattern('[0-9]*')
     ]),
     city: new FormControl(''),
     gender: new FormControl('1'),
-    department: new FormControl(1),
+    department: new FormControl('dep1'),
     hireDate: new FormControl(new Date()),
     isPermanent: new FormControl(false)
   });
@@ -34,7 +41,7 @@ export class EmployeeService {
       mobile: '',
       city: '',
       gender: '1',
-      department: 1,
+      department: 'dep1',
       hireDate: new Date(),
       isPermanent: false
     });
@@ -52,7 +59,7 @@ export class EmployeeService {
       mobile: employee.mobile,
       city: employee.city,
       gender: employee.gender,
-      dapartment: employee.department,
+      department: employee.department,
       hireDate: employee.hireDate.toISOString(),
       isPermanent: employee.isPermanent
     });
@@ -65,8 +72,8 @@ export class EmployeeService {
       mobile: employee.mobile,
       city: employee.city,
       gender: employee.gender,
-      dapartment: employee.department,
-      hireDate: employee.hireDate.toISOString(),
+      department: employee.department,
+      hireDate: employee.hireDate,
       isPermanent: employee.isPermanent
     });
   }
