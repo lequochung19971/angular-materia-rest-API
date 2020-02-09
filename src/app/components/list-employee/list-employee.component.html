@@ -1,15 +1,18 @@
 <div class="d-flex flex-column">
-  <div class="overlay" [hidden]="!checkLoadingService.get()"></div>
+  <div
+    class="overlay"
+    [hidden]="!(checkLoadingService.isLoading$ | async)"
+  ></div>
   <header>
     <mat-toolbar color="primary">
       <span>CRUD Reactive Form Angular 8 Material </span>
     </mat-toolbar>
-    <div [hidden]="!checkLoadingService.get()">
+    <div [hidden]="!(checkLoadingService.isLoading$ | async)">
       <mat-progress-bar mode="indeterminate"></mat-progress-bar>
     </div>
   </header>
 
   <main>
-    <router-outlet></router-outlet>
+    <app-employee-table></app-employee-table>
   </main>
 </div>

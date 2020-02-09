@@ -6,6 +6,8 @@ import { DeparmentService } from 'src/app/shared/deparment.service';
 import { Employee } from 'src/app/model/employee.model';
 import { EmployeeInfoDialogService } from 'src/app/shared/employee-info-dialog.service';
 import * as _ from 'lodash';
+import { ConfirmDialogService } from 'src/app/shared/confirm-dialog.service';
+import { NotificationService } from 'src/app/shared/notification.service';
 
 @Component({
   selector: 'app-employee-table',
@@ -32,9 +34,11 @@ export class EmployeeTableComponent implements OnInit, OnDestroy {
     private employeeService: EmployeeService,
     private checkLoadingService: CheckLoadingService,
     private depService: DeparmentService,
-    private employeeDialog: EmployeeInfoDialogService
+    private employeeDialog: EmployeeInfoDialogService,
+    private dialogConfirm: ConfirmDialogService,
+    private notiService: NotificationService
   ) {
-    checkLoadingService.set(true);
+    checkLoadingService.isLoading$.next(true);
   }
 
   ngOnInit() {
@@ -53,7 +57,8 @@ export class EmployeeTableComponent implements OnInit, OnDestroy {
         });
 
         this.employeeList = new MatTableDataSource(array);
-        this.checkLoadingService.set(false);
+        this.checkLoadingService.isLoading$.next(false);
+
         this.employeeList.sort = this.sort;
         this.employeeList.paginator = this.pagi;
         this.employeeList.filterPredicate = (data, filter) => {
@@ -66,13 +71,14 @@ export class EmployeeTableComponent implements OnInit, OnDestroy {
         };
       },
       () => {
-        this.checkLoadingService.set(false);
+        this.checkLoadingService.isLoading$.next(false);
       }
     );
   }
 
   ngOnDestroy() {
-    this.checkLoadingService.set(false);
+    this.checkLoadingService.isLoading$.next(false);
+    this.checkLoadingService.isLoading$.complete();
   }
 
   clearSearchBox() {
@@ -91,5 +97,17 @@ export class EmployeeTableComponent implements OnInit, OnDestroy {
   openEditEmployeeDialog(data) {
     this.employeeService.form.setValue(_.omit(data, 'departmentName'));
     this.employeeDialog.openEmployeeInfoDialog();
+  }
+
+  deleteEmployeeConfirm(key) {
+    this.dialogConfirm
+      .openConfirmDialog('Are you sure to delete this record ?')
+      .afterClosed()
+      .subscribe(res => {
+        if (res) {
+          this.employeeService.deleteEmployee(key);
+          this.notiService.openSnackBar('Deleted Successfully', 'warn');
+        }
+      });
   }
 }

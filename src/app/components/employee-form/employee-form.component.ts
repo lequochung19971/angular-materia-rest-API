@@ -9,7 +9,6 @@ import { EmployeeService } from 'src/app/shared/employee.service';
 import { DeparmentService } from 'src/app/shared/deparment.service';
 import { Observable } from 'rxjs';
 import { NotificationService } from 'src/app/shared/notification.service';
-import { Employee } from 'src/app/model/employee.model';
 import { CalculatorService } from 'src/app/shared/calculator.service';
 
 @Component({
@@ -45,6 +44,7 @@ export class EmployeeFormComponent implements OnInit {
         this.notiService.openSnackBar('Submitted Successfully', 'success');
       } else {
         this.employeeService.updateEmployee(this.employeeService.form.value);
+        this.notiService.openSnackBar('Editted Successfully', 'success');
       }
       this.employeeService.form.reset();
       this.employeeService.initializeFormGroup();

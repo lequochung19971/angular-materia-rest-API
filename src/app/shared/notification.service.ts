@@ -10,7 +10,7 @@ export class NotificationService {
 
   openSnackBar(message: string, snackType?: string) {
     this.snackBar.openFromComponent(SnackbarComponent, {
-      duration: 20000,
+      duration: 2000,
       horizontalPosition: 'right',
       verticalPosition: 'top',
       panelClass: `snackbar-${snackType}`,

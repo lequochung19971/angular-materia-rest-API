@@ -68,7 +68,11 @@
           <button mat-icon-button (click)="openEditEmployeeDialog(data)">
             <mat-icon>launch</mat-icon>
           </button>
-          <button mat-icon-button color="warn">
+          <button
+            mat-icon-button
+            color="warn"
+            (click)="deleteEmployeeConfirm(data.$key)"
+          >
             <mat-icon>delete_outline</mat-icon>
           </button>
         </mat-cell>

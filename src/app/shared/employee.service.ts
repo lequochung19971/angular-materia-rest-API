@@ -79,6 +79,6 @@ export class EmployeeService {
   }
 
   deleteEmployee($key: string) {
-    this.employeeList.remove($key);
+    console.log(this.employeeList.remove($key));
   }
 }
