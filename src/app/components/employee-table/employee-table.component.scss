@@ -18,3 +18,12 @@
   width: 60%;
 }
 
+.show-edit-delete {
+  display: none;
+}
+
+mat-row:hover {
+  .show-edit-delete {
+    display: block;
+  }
+}

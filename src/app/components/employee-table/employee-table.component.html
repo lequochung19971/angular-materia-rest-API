@@ -64,17 +64,19 @@
       </ng-container>
       <ng-container matColumnDef="actions">
         <mat-header-cell *matHeaderCellDef></mat-header-cell>
-        <mat-cell *matCellDef="let data">
-          <button mat-icon-button (click)="openEditEmployeeDialog(data)">
-            <mat-icon>launch</mat-icon>
-          </button>
-          <button
-            mat-icon-button
-            color="warn"
-            (click)="deleteEmployeeConfirm(data.$key)"
-          >
-            <mat-icon>delete_outline</mat-icon>
-          </button>
+        <mat-cell *matCellDef="let data" class="actions">
+          <div class="show-edit-delete">
+            <button mat-icon-button (click)="openEditEmployeeDialog(data)">
+              <mat-icon>launch</mat-icon>
+            </button>
+            <button
+              mat-icon-button
+              color="warn"
+              (click)="deleteEmployeeConfirm(data.$key)"
+            >
+              <mat-icon>delete_outline</mat-icon>
+            </button>
+          </div>
         </mat-cell>
       </ng-container>
       <ng-container matColumnDef="non-data">
