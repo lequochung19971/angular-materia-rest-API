@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CheckLoadingService } from 'src/app/check-loading.service';
+import { CheckLoadingService } from 'src/app/shared/check-loading.service';
 
 @Component({
   selector: 'app-list-employee',

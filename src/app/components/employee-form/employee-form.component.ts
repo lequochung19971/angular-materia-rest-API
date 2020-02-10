@@ -10,6 +10,11 @@ import { DeparmentService } from 'src/app/shared/deparment.service';
 import { Observable } from 'rxjs';
 import { NotificationService } from 'src/app/shared/notification.service';
 import { CalculatorService } from 'src/app/shared/calculator.service';
+import { EmployeeRestService } from 'src/app/shared/employee-rest.service';
+import { Employee } from 'src/app/model/employee.model';
+import { CheckLoadingService } from 'src/app/shared/check-loading.service';
+import { MatDialogRef } from '@angular/material';
+import { EmployeeTableComponent } from '../employee-table/employee-table.component';
 
 @Component({
   selector: 'app-employee-form',
@@ -18,11 +23,21 @@ import { CalculatorService } from 'src/app/shared/calculator.service';
 })
 export class EmployeeFormComponent implements OnInit {
   @Output() isFilled = new EventEmitter();
+
+  departments = ['Accountant', 'Software Engineer', 'Developer', 'Team Leader'];
+
+  newEmployee: Employee;
+
+  objTest = [1, 2, 3, 4, 5, 5];
+
   constructor(
     private employeeService: EmployeeService,
+    private employeeServiceR: EmployeeRestService,
     private depService: DeparmentService,
     private notiService: NotificationService,
-    private calculator: CalculatorService
+    private calculator: CalculatorService,
+    private checkLoading: CheckLoadingService,
+    private dialogRef: MatDialogRef<EmployeeTableComponent>
   ) {}
 
   ngOnInit() {
@@ -30,24 +45,33 @@ export class EmployeeFormComponent implements OnInit {
   }
 
   onClear() {
-    this.employeeService.form.reset();
-    this.employeeService.initializeFormGroup();
-    this.employeeService.getEmployees();
+    this.employeeServiceR.form.reset();
+    this.employeeServiceR.initializeFormGroup();
     this.notiService.openSnackBar('Fields were cleared', 'error');
   }
 
   onSubmit() {
-    if (this.employeeService.form.valid) {
-      if (!this.employeeService.form.get('$key').value) {
-        this.employeeService.insertEmployee(this.employeeService.form.value);
-
-        this.notiService.openSnackBar('Submitted Successfully', 'success');
-      } else {
-        this.employeeService.updateEmployee(this.employeeService.form.value);
-        this.notiService.openSnackBar('Editted Successfully', 'success');
+    if (this.employeeServiceR.form.valid) {
+      this.checkLoading.isLoading$.next(true);
+      if (!this.employeeServiceR.form.get('id').value) {
+        this.employeeServiceR
+          .createEmployee(this.employeeServiceR.form.value)
+          .subscribe((newEmployee: Employee) => {
+            this.dialogRef.close(true);
+            this.checkLoading.isLoading$.next(false);
+            this.notiService.openSnackBar('Submitted Successfully', 'success');
+          }),
+          error => {
+            this.checkLoading.isLoading$.next(false);
+            this.notiService.openSnackBar('Submitted Unsuccessfully', 'error');
+          };
       }
-      this.employeeService.form.reset();
-      this.employeeService.initializeFormGroup();
+      // else {
+      //   this.employeeService.updateEmployee(this.employeeService.form.value);
+      //   this.notiService.openSnackBar('Editted Successfully', 'success');
+      // }
+      this.employeeServiceR.form.reset();
+      this.employeeServiceR.initializeFormGroup();
     }
   }
 
@@ -84,5 +108,9 @@ export class EmployeeFormComponent implements OnInit {
         ? 'Only contains numbers.'
         : '';
     }
+  }
+  ngOnDestroy(): void {
+    this.checkLoading.isLoading$.next(false);
+    this.checkLoading.isLoading$.complete();
   }
 }

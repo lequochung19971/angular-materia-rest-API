@@ -52,9 +52,7 @@
         <mat-header-cell *matHeaderCellDef mat-sort-header
           >Department</mat-header-cell
         >
-        <mat-cell *matCellDef="let element">{{
-          element.departmentName
-        }}</mat-cell>
+        <mat-cell *matCellDef="let element">{{ element.department }}</mat-cell>
       </ng-container>
       <ng-container matColumnDef="city">
         <mat-header-cell *matHeaderCellDef mat-sort-header
@@ -87,12 +85,12 @@
       <mat-footer-row
         *matFooterRowDef="['non-data']"
         [ngClass]="{
-          hide: !!(employeeList && employeeList.data.length !== 0)
+          hide: !!(employeeList && employeeList.length !== 0)
         }"
       ></mat-footer-row>
     </mat-table>
     <mat-paginator
-      [length]="100"
+      [length]="this.resLength"
       [pageSize]="10"
       [pageSizeOptions]="[5, 10, 25, 100]"
       showFirstLastButtons

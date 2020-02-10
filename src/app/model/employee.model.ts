@@ -1,6 +1,6 @@
 export class Employee {
   constructor(
-    public $key: string,
+    public id: string,
     public fullName: string,
     public email: string,
     public mobile: string,

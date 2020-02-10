@@ -1,7 +1,7 @@
 import { Injectable, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { AngularFireDatabase, AngularFireList } from '@angular/fire/database';
-import { CheckLoadingService } from '../check-loading.service';
+import { CheckLoadingService } from './check-loading.service';
 
 @Injectable({
   providedIn: 'root'
