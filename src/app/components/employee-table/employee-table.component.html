@@ -11,11 +11,11 @@
     <mat-form-field floatLabel="never" class="w-100">
       <input
         matInput
+        id="search"
         placeholder="Search"
-        value="value"
         autocomplete="off"
         [(ngModel)]="searchKey"
-        (keyup)="applyFilter()"
+        (keyup)="search(searchKey)"
       />
       <button
         mat-button
@@ -64,13 +64,21 @@
         <mat-header-cell *matHeaderCellDef></mat-header-cell>
         <mat-cell *matCellDef="let data" class="actions">
           <div class="show-edit-delete">
-            <button mat-icon-button (click)="openEditEmployeeDialog(data)">
+            <button mat-icon-button title="Info" color="primary">
+              <mat-icon>info</mat-icon>
+            </button>
+            <button
+              mat-icon-button
+              (click)="openEditEmployeeDialog(data)"
+              title="Edit"
+            >
               <mat-icon>launch</mat-icon>
             </button>
             <button
               mat-icon-button
               color="warn"
-              (click)="deleteEmployeeConfirm(data.$key)"
+              (click)="deleteEmployeeConfirm(data.id)"
+              title="Delete"
             >
               <mat-icon>delete_outline</mat-icon>
             </button>
@@ -81,7 +89,11 @@
         <mat-footer-cell *matFooterCellDef>Data not found...</mat-footer-cell>
       </ng-container>
       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-      <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+      <mat-row
+        *matRowDef="let row; columns: displayedColumns"
+        (click)="rowIsClicked(row)"
+        class="employee-row"
+      ></mat-row>
       <mat-footer-row
         *matFooterRowDef="['non-data']"
         [ngClass]="{

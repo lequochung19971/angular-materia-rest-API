@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
 
 import { Employee } from '../model/employee.model';
@@ -30,7 +30,7 @@ export class EmployeeRestService {
     ]),
     city: new FormControl(''),
     gender: new FormControl('1'),
-    department: new FormControl('dep1'),
+    department: new FormControl('', Validators.required),
     hireDate: new FormControl(new Date()),
     isPermanent: new FormControl(false)
   });
@@ -41,7 +41,8 @@ export class EmployeeRestService {
 
   constructor(private http: HttpClient) {}
 
-  initializeFormGroup() {
+  resetFormGroup() {
+    this.form.reset();
     this.form.setValue({
       id: null,
       fullName: '',
@@ -49,7 +50,7 @@ export class EmployeeRestService {
       mobile: '',
       city: '',
       gender: '1',
-      department: 'dep1',
+      department: '',
       hireDate: new Date(),
       isPermanent: false
     });
@@ -65,23 +66,40 @@ export class EmployeeRestService {
     sort: string,
     order: string,
     page: number,
-    limit: number
+    limit: number,
+    searchKey?: string
   ): Observable<any> {
-    const requestUrl = `${this.employeeUrl}?_sort=${sort}&_order=${order}&_page=${page}&_limit=${limit}`;
+    const requestUrl = `${this.employeeUrl}?_sort=${sort}&_order=${order}&_page=${page}&_limit=${limit}&q=${searchKey}`;
     return this.http
       .get<any>(requestUrl, { observe: 'response' })
-      .pipe(tap(_ => console.log('fected for table')));
+      .pipe(
+        tap(_ => console.log('fected for table')),
+        catchError(err => of(`Bad Promise: ${err}`))
+      );
   }
 
   createEmployee(employee: Employee): Observable<Employee> {
-    // const newEmployee = _.omit(employee, 'id');
-    // newEmployee.hireDate = newEmployee.hireDate.toISOString();
-    // console.log(newEmployee);
     return this.http
       .post<any>(this.employeeUrl, employee, this.httpOptions)
       .pipe(
         tap(_ => console.log('added succesfully')),
-        catchError(_ => console.log)
+        catchError(err => of(`Bad Promise: ${err}`))
       );
+  }
+
+  updateEmployee(employee: Employee): Observable<Employee> {
+    const requestUrl = `${this.employeeUrl}/${employee.id}`;
+    return this.http.put<any>(requestUrl, employee, this.httpOptions).pipe(
+      tap(_ => console.log(`updated id = ${employee.id}`)),
+      catchError(err => of(`Bad Promise: ${err}`))
+    );
+  }
+
+  deleteEmployee(id: string): Observable<any> {
+    const requestUrl = `${this.employeeUrl}/${id}`;
+    return this.http.delete<any>(requestUrl, this.httpOptions).pipe(
+      tap(_ => console.log('Deleted succesfully')),
+      catchError(err => of(`Bad Promise: ${err}`))
+    );
   }
 }

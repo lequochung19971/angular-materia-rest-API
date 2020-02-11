@@ -4,7 +4,7 @@
       mat-button
       mat-icon-button
       [mat-dialog-close]="false"
-      (click)="this.employeeServiceR.initializeFormGroup()"
+      (click)="this.employeeServiceR.resetFormGroup()"
     >
       <mat-icon>close</mat-icon>
     </button>
@@ -56,6 +56,7 @@
                 >{{ department }}</mat-option
               >
             </mat-select>
+            <mat-error>{{ getErrorMessage('department') }}</mat-error>
           </mat-form-field>
           <mat-form-field>
             <input
