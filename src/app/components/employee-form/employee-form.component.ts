@@ -13,6 +13,7 @@ import { Employee } from 'src/app/model/employee.model';
 import { CheckLoadingService } from 'src/app/shared/check-loading.service';
 import { MatDialogRef, DateAdapter } from '@angular/material';
 import { EmployeeTableComponent } from '../employee-table/employee-table.component';
+import { AbstractControl } from '@angular/forms';
 
 @Component({
   selector: 'app-employee-form',
@@ -114,7 +115,30 @@ export class EmployeeFormComponent implements OnInit {
         ? 'This field is mandatory.'
         : '';
     }
+    if (field === 'password') {
+      return this.employeeServiceR.form.controls[field].hasError('minlength')
+        ? 'Minimum 8 charactors needed.'
+        : this.employeeServiceR.form.controls[field].hasError('required')
+        ? 'This field is mandatory.'
+        : this.employeeServiceR.form.controls[field].hasError('maxlength')
+        ? 'Maximum 30 charactors needed.'
+        : '';
+    }
+    if (field === 'confirmPassword') {
+      return this.employeeServiceR.form.controls[field].hasError('minlength')
+        ? 'Minimum 8 charactors needed.'
+        : this.employeeServiceR.form.controls[field].hasError('required')
+        ? 'This field is mandatory.'
+        : this.employeeServiceR.form.controls[field].hasError('maxlength')
+        ? 'Maximum 30 charactors needed.'
+        : this.employeeServiceR.form.controls[field].hasError(
+            'passwordNotMatch'
+          )
+        ? 'Passwords do not match.'
+        : '';
+    }
   }
+
   ngOnDestroy(): void {
     this.checkLoading.isLoading$.next(false);
     this.checkLoading.isLoading$.complete();

@@ -14,7 +14,7 @@
     class="normal-form"
     (submit)="onSubmit()"
   >
-    <mat-grid-list cols="2" rowHeight="300px">
+    <mat-grid-list cols="2" rowHeight="350px">
       <mat-grid-tile>
         <div class="input-container">
           <input type="hidden" formControlName="id" />
@@ -32,6 +32,28 @@
             <mat-error>{{ getErrorMessage('email') }}</mat-error>
           </mat-form-field>
           <mat-form-field>
+            <input
+              matInput
+              formControlName="password"
+              type="password"
+              placeholder="Password*"
+            />
+            <mat-error>{{ getErrorMessage('password') }}</mat-error>
+          </mat-form-field>
+          <mat-form-field>
+            <input
+              matInput
+              formControlName="confirmPassword"
+              type="password"
+              placeholder="Confirm Password*"
+            />
+            <mat-error>{{ getErrorMessage('confirmPassword') }}</mat-error>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <div class="input-container">
+          <mat-form-field>
             <span matPrefix>+84 &nbsp;</span>
             <input matInput formControlName="mobile" placeholder="Mobile*" />
             <mat-error>{{ getErrorMessage('mobile') }}</mat-error>
@@ -39,10 +61,6 @@
           <mat-form-field>
             <input matInput formControlName="city" placeholder="City" />
           </mat-form-field>
-        </div>
-      </mat-grid-tile>
-      <mat-grid-tile>
-        <div class="input-container">
           <mat-radio-group formControlName="gender">
             <mat-radio-button value="1">Male</mat-radio-button>
             <mat-radio-button value="2">Female</mat-radio-button>
