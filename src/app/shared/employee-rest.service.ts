@@ -22,12 +22,11 @@ import { CheckLoadingService } from './check-loading.service';
 export class EmployeeRestService {
   private readonly API_URL = 'http://localhost:3000/employees';
 
-  protected employeeDataChange: BehaviorSubject<
-    Employee[]
-  > = new BehaviorSubject<Employee[]>([]);
-  protected dataLengthChange: BehaviorSubject<string> = new BehaviorSubject<
-    string
-  >('0');
+  protected employeeDataChange: BehaviorSubject<Employee[]> = new BehaviorSubject<Employee[]>([]);
+  protected dataLengthChange: BehaviorSubject<string> = new BehaviorSubject<string>('0');
+
+  employeeDatas$: Observable<Employee[]> = this.employeeDataChange.asObservable();
+  dataLength$: Observable<string> = this.dataLengthChange.asObservable();
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })

@@ -134,6 +134,3 @@ export class EmployeeTableComponent
     this.checkLoadingService.isLoading$.complete();
   }
 }
-
-
-https://blog.strongbrew.io/rxjs-best-practices-in-angular/

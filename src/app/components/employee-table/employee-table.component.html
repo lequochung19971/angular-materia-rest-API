@@ -14,7 +14,7 @@
     ></app-employee-searchbox>
   </div>
   <div class="mat-elevation-z5">
-    <mat-table [dataSource]="employeeServiceR.employeeDatas" matSort>
+    <mat-table [dataSource]="employeeServiceR.employeeDatas$ | async" matSort>
       <ng-container matColumnDef="fullName">
         <mat-header-cell *matHeaderCellDef mat-sort-header
           >Full Name</mat-header-cell
@@ -89,7 +89,7 @@
       ></mat-footer-row>
     </mat-table>
     <mat-paginator
-      [length]="employeeServiceR.dataLength"
+      [length]="employeeServiceR.dataLength$ | async"
       [pageSize]="10"
       [pageSizeOptions]="[5, 10, 25, 100]"
       showFirstLastButtons
