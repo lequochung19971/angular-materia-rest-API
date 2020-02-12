@@ -20,4 +20,28 @@ export class ValidatorsService {
       group.get('confirmPassword').setErrors({ passwordNotMatch: true });
     }
   }
+
+  atLeastOneNumber(control: AbstractControl) {
+    const password: string = control.value;
+    if (!/^(?=.*[0-9])/.test(password)) {
+      return { nonNumber: true };
+    }
+    return null;
+  }
+
+  atLeastOneSpecialCharacter(control: AbstractControl) {
+    const password: string = control.value;
+    if (!/^(?=.*[!@#$%^&*])/.test(password)) {
+      return { nonSpecial: true };
+    }
+    return null;
+  }
+
+  atLeastOneSpecialCharacterAndNumber(control: AbstractControl) {
+    const password: string = control.value;
+    if (!/^(?=.*[0-9])|(?=.*[!@#$%^&*])/.test(password)) {
+      return { nonSpecialAndNumber: true };
+    }
+    return null;
+  }
 }

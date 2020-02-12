@@ -77,11 +77,11 @@ export class EmployeeFormComponent implements OnInit {
     }
   }
 
-  formatFullName() {
+  formatUppercaseFirstOfEachLetter(filed: string): void {
     let strBeConvert = this.calculator.uppercaseFirstOfEachLetter(
-      this.employeeServiceR.form.get('fullName').value
+      this.employeeServiceR.form.get(filed).value
     );
-    this.employeeServiceR.form.get('fullName').setValue(strBeConvert);
+    this.employeeServiceR.form.get(filed).setValue(strBeConvert);
   }
 
   getErrorMessage(field: string) {
@@ -122,6 +122,14 @@ export class EmployeeFormComponent implements OnInit {
         ? 'This field is mandatory.'
         : this.employeeServiceR.form.controls[field].hasError('maxlength')
         ? 'Maximum 30 charactors needed.'
+        : this.employeeServiceR.form.controls[field].hasError(
+            'nonSpecialAndNumber'
+          )
+        ? 'Have at least one number and special character.'
+        : this.employeeServiceR.form.controls[field].hasError('nonSpecial')
+        ? 'Have at least one special character.'
+        : this.employeeServiceR.form.controls[field].hasError('nonNumber')
+        ? 'Have at least one number.'
         : '';
     }
     if (field === 'confirmPassword') {

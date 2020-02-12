@@ -1,0 +1,19 @@
+<mat-form-field floatLabel="never" class="w-60">
+  <input
+    matInput
+    id="search"
+    placeholder="Search"
+    autocomplete="off"
+    [(ngModel)]="searchKey"
+    (keyup)="onSearch()"
+  />
+  <button
+    mat-button
+    mat-icon-button
+    matSuffix
+    *ngIf="searchKey"
+    (click)="clearSearchBox()"
+  >
+    <mat-icon>close</mat-icon>
+  </button>
+</mat-form-field>

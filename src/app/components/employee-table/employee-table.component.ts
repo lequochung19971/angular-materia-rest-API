@@ -6,10 +6,8 @@ import {
   AfterViewInit,
   EventEmitter
 } from '@angular/core';
-import { EmployeeService } from 'src/app/shared/employee.service';
 import { MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
 import { CheckLoadingService } from 'src/app/shared/check-loading.service';
-import { DeparmentService } from 'src/app/shared/deparment.service';
 import { Employee } from 'src/app/model/employee.model';
 import { EmployeeInfoDialogService } from 'src/app/shared/employee-info-dialog.service';
 import * as _ from 'lodash';
@@ -17,23 +15,8 @@ import { ConfirmDialogService } from 'src/app/shared/confirm-dialog.service';
 import { NotificationService } from 'src/app/shared/notification.service';
 import { EmployeeRestService } from 'src/app/shared/employee-rest.service';
 
-import {
-  merge,
-  Observable,
-  of as observableOf,
-  Subject,
-  timer,
-  fromEvent
-} from 'rxjs';
-import {
-  catchError,
-  map,
-  startWith,
-  switchMap,
-  distinctUntilChanged,
-  tap,
-  debounce
-} from 'rxjs/operators';
+import { merge, timer } from 'rxjs';
+import { startWith, tap, debounce } from 'rxjs/operators';
 
 @Component({
   selector: 'app-employee-table',
@@ -65,15 +48,12 @@ export class EmployeeTableComponent
   constructor(
     private employeeServiceR: EmployeeRestService,
     private checkLoadingService: CheckLoadingService,
-    private depService: DeparmentService,
     private employeeDialog: EmployeeInfoDialogService,
     private dialogConfirm: ConfirmDialogService,
     private notiService: NotificationService
   ) {}
 
-  ngOnInit() {
-    this.checkLoadingService.isLoading$.next(true);
-  }
+  ngOnInit() {}
 
   ngAfterViewInit() {
     this.getEmployeesTableData();
@@ -91,45 +71,27 @@ export class EmployeeTableComponent
           }
         }),
         startWith({}),
-        debounce(() => timer(this.debounceTime)),
-        distinctUntilChanged(),
-        switchMap(() => {
-          this.checkLoadingService.isLoading$.next(true);
-          return this.employeeServiceR.getEmployessForTable(
+        debounce(() => timer(300)),
+        tap(_ => {
+          this.employeeServiceR.getEmployessForTable(
             this.sort.active ? this.sort.active : '',
             this.sort.direction,
             this.pagi.pageIndex + 1,
             this.pagi.pageSize,
             this.searchKey
           );
-        }),
-        map(data => {
-          this.checkLoadingService.isLoading$.next(false);
-          this.resLength = data.headers.get('X-Total-Count');
-          return data.body;
-        }),
-        catchError(() => {
-          this.checkLoadingService.isLoading$.next(false);
-          this.notiService.openSnackBar('Disconnect to server', 'error');
-          return observableOf([]);
         })
       )
-      .subscribe(data => {
-        this.employeeList = data;
-      });
+      .subscribe();
   }
 
-  search(term: string) {
+  refreshTable(): void {
+    this.getEmployeesTableData();
+  }
+
+  onSearch(term: string) {
+    this.searchKey = term;
     this.searchEvent.emit(term);
-  }
-
-  clearSearchBox() {
-    this.searchKey = '';
-    this.searchEvent.emit('');
-  }
-
-  applyFilter() {
-    this.employeeList.filter = this.searchKey.trim().toLowerCase();
   }
 
   reloadTableAfterSubmit() {
@@ -138,7 +100,7 @@ export class EmployeeTableComponent
       .afterClosed()
       .subscribe(successed => {
         if (successed) {
-          this.getEmployeesTableData();
+          this.refreshTable();
           this.employeeServiceR.resetFormGroup();
         }
       });
@@ -159,17 +121,12 @@ export class EmployeeTableComponent
       .afterClosed()
       .subscribe(res => {
         if (res) {
-          console.log(res);
           this.employeeServiceR.deleteEmployee(id).subscribe(() => {
             this.notiService.openSnackBar('Deleted Successfully', 'warn');
-            this.getEmployeesTableData();
+            this.refreshTable();
           });
         }
       });
-  }
-
-  rowIsClicked(data) {
-    console.log(data);
   }
 
   ngOnDestroy() {
@@ -177,3 +134,6 @@ export class EmployeeTableComponent
     this.checkLoadingService.isLoading$.complete();
   }
 }
+
+
+https://blog.strongbrew.io/rxjs-best-practices-in-angular/

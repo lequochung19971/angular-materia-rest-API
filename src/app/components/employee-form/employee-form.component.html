@@ -23,7 +23,7 @@
               matInput
               formControlName="fullName"
               placeholder="Full Name*"
-              (blur)="formatFullName()"
+              (blur)="formatUppercaseFirstOfEachLetter('fullName')"
             />
             <mat-error>{{ getErrorMessage('fullName') }}</mat-error>
           </mat-form-field>
@@ -59,7 +59,12 @@
             <mat-error>{{ getErrorMessage('mobile') }}</mat-error>
           </mat-form-field>
           <mat-form-field>
-            <input matInput formControlName="city" placeholder="City" />
+            <input
+              matInput
+              formControlName="city"
+              placeholder="City"
+              (blur)="formatUppercaseFirstOfEachLetter('city')"
+            />
           </mat-form-field>
           <mat-radio-group formControlName="gender">
             <mat-radio-button value="1">Male</mat-radio-button>

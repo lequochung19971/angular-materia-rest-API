@@ -15,6 +15,7 @@ import { EmployeeTableComponent } from './components/employee-table/employee-tab
 import { EmployeeFormComponent } from './components/employee-form/employee-form.component';
 import { ComfirmDialogComponent } from './components/comfirm-dialog/comfirm-dialog.component';
 import { SnackbarComponent } from './components/snackbar/snackbar.component';
+import { EmployeeSearchboxComponent } from './components/employee-searchbox/employee-searchbox.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -22,7 +23,8 @@ import { SnackbarComponent } from './components/snackbar/snackbar.component';
     EmployeeTableComponent,
     EmployeeFormComponent,
     ComfirmDialogComponent,
-    SnackbarComponent
+    SnackbarComponent,
+    EmployeeSearchboxComponent
   ],
   imports: [
     BrowserModule,

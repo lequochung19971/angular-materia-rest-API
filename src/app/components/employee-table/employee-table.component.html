@@ -8,28 +8,13 @@
     >
       <mat-icon>add</mat-icon>Create
     </button>
-    <mat-form-field floatLabel="never" class="w-100">
-      <input
-        matInput
-        id="search"
-        placeholder="Search"
-        autocomplete="off"
-        [(ngModel)]="searchKey"
-        (keyup)="search(searchKey)"
-      />
-      <button
-        mat-button
-        mat-icon-button
-        matSuffix
-        *ngIf="searchKey"
-        (click)="clearSearchBox()"
-      >
-        <mat-icon>close</mat-icon>
-      </button>
-    </mat-form-field>
+    <app-employee-searchbox
+      (search)="onSearch($event)"
+      [searchKey]="searchKey"
+    ></app-employee-searchbox>
   </div>
   <div class="mat-elevation-z5">
-    <mat-table [dataSource]="employeeList" matSort>
+    <mat-table [dataSource]="employeeServiceR.employeeDatas" matSort>
       <ng-container matColumnDef="fullName">
         <mat-header-cell *matHeaderCellDef mat-sort-header
           >Full Name</mat-header-cell
@@ -91,18 +76,20 @@
       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
       <mat-row
         *matRowDef="let row; columns: displayedColumns"
-        (click)="rowIsClicked(row)"
         class="employee-row"
       ></mat-row>
       <mat-footer-row
         *matFooterRowDef="['non-data']"
         [ngClass]="{
-          hide: !!(employeeList && employeeList.length !== 0)
+          hide: !!(
+            employeeServiceR.employeeDatas &&
+            employeeServiceR.employeeDatas.length !== 0
+          )
         }"
       ></mat-footer-row>
     </mat-table>
     <mat-paginator
-      [length]="this.resLength"
+      [length]="employeeServiceR.dataLength"
       [pageSize]="10"
       [pageSizeOptions]="[5, 10, 25, 100]"
       showFirstLastButtons
